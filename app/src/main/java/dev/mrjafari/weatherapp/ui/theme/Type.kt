@@ -2,9 +2,11 @@ package dev.mrjafari.weatherapp.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import dev.mrjafari.weatherapp.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -25,4 +27,12 @@ val Typography = Typography(
         fontSize = 12.sp
     )
     */
+)
+val fonts =FontFamily(
+    Font(R.font.sansation_regular, weight = FontWeight.Normal),
+    Font(R.font.sansation_bold, weight = FontWeight.Bold),
+    Font(R.font.sansation_bold, weight = FontWeight.SemiBold),
+    Font(R.font.sansation_light, weight = FontWeight.Light),
+
+
 )

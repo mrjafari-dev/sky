@@ -187,14 +187,14 @@ fun bottemsheet(countries: MutableList<CountryModel>) {
 
                         }, modifier = Modifier
                             .fillMaxWidth(0.7f)
-                            .offset(15.dp, 10.dp),
+                            .offset(15.dp, 20.dp),
                             colors = TextFieldDefaults.textFieldColors(
                                 backgroundColor = shadow,
                                 cursorColor = Color.Black,
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent
                             ),
-                            shape = RoundedCornerShape(10.dp),
+                            shape = RoundedCornerShape(40.dp),
                             label = {
                                 Text(text = "Search Country")
                             }
@@ -211,9 +211,9 @@ fun bottemsheet(countries: MutableList<CountryModel>) {
                                 }
                             }, modifier = Modifier
                                 .fillMaxWidth(0.7f)
-                                .offset(25.dp, 20.dp)
+                                .offset(25.dp, 30.dp)
                         ) {
-                            Text("Down")
+                            Text("Ok")
                         }
                     }
 
@@ -224,7 +224,8 @@ fun bottemsheet(countries: MutableList<CountryModel>) {
 
 
             }
-        }, sheetPeekHeight = 0.dp
+        }, sheetPeekHeight = 0.dp,
+
     ) {
         MainLayout(coroutineScope, bottomSheetScaffoldState, ContryName)
 
@@ -246,7 +247,7 @@ fun Preview_MultipleRadioButtons(countries: MutableList<CountryModel>): String {
               text = "Country code: ${selectedValue.value.ifEmpty { "NONE" }}",
               modifier = Modifier.offset(20.dp)
           )*/
-        LazyVerticalGrid(cells = GridCells.Adaptive(minSize = 130.dp)) {
+        LazyVerticalGrid(cells = GridCells.Adaptive(minSize = 140.dp), modifier = Modifier.offset(0.dp,20.dp)) {
             items(itemss) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -258,7 +259,7 @@ fun Preview_MultipleRadioButtons(countries: MutableList<CountryModel>): String {
                             },
                             role = Role.RadioButton
                         )
-                        .padding(8.dp)
+                        .padding(19.dp)
                 ) {
                     val name: String
                     if (it.country_name.equals(""))
