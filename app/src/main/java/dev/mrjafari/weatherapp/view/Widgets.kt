@@ -1,10 +1,15 @@
 package dev.mrjafari.weatherapp.view
 
+import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -24,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import dev.mrjafari.weatherapp.coloredShadow
 import dev.mrjafari.weatherapp.ui.theme.*
 import kotlinx.coroutines.AbstractCoroutine
@@ -55,17 +61,76 @@ fun MainLayout(
                 .padding(20.dp, 30.dp, 20.dp)
         ) {
 
-            SearchBox(coroutine, bottomSheetScaffoldState, ContryName)
+            searchBox(coroutine, bottomSheetScaffoldState, ContryName)
             todayStatus()
+            noteList()
         }
-
+        FloatingActionButton(
+            onClick = { },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(20.dp),
+            backgroundColor = blue,
+        ) {
+            Icon(painter = painterResource(id = dev.mrjafari.weatherapp.R.drawable.ic_baseline_add_24), contentDescription ="", tint = white )
+            Log.i("45656465", "")
+        }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun noteList() {
+    val tes = arrayListOf<String>("mohammdfdsfdfsdfdsfsfsdfxczxadreza ", "Alireza ", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli")
+    tes.add("sfd")
+    Column(
+        Modifier
+            .padding(8.dp)
+            .fillMaxSize()
+    ) {
+        /*  Text(
+              text = "Country code: ${selectedValue.value.ifEmpty { "NONE" }}",
+              modifier = Modifier.offset(20.dp)
+          )*/
+        LazyVerticalGrid(
+            cells = GridCells.Adaptive(minSize = 140.dp),
+            modifier = Modifier
+                .offset(0.dp, 0.dp)
+                .fillMaxSize(),
+            contentPadding = PaddingValues(
+               start= 0.dp, top =  0.dp, end = 0.dp, bottom =  0.dp
+            )
+        ) {
+            items(items = tes) {
+                noteListItem(text = it.toString())
+            }
+        }
+    }
+}
+
+@Composable
+fun noteListItem(text: String) {
+
+    Card(modifier = Modifier
+        .fillMaxSize()
+        .padding(10.dp)
+        .height(150.dp)
+        .aspectRatio(1f),
+        backgroundColor = cardColor,
+        elevation = 0.dp,
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Column() {
+            Text(text = text, modifier = Modifier.padding(10.dp))
+
+        }
+    }
+
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SearchBox(
+fun searchBox(
     coroutineScope: CoroutineScope,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
     ContryName: MutableState<String>
@@ -105,7 +170,12 @@ fun SearchBox(
                     painter = painterResource(dev.mrjafari.weatherapp.R.drawable.place),
                     contentDescription = "content discription"
                 )
-                Text(text = ContryName.value, fontSize = 16.sp,fontFamily = fonts, fontWeight = FontWeight.Bold)
+                Text(
+                    text = ContryName.value,
+                    fontSize = 16.sp,
+                    fontFamily = fonts,
+                    fontWeight = FontWeight.Bold
+                )
             }
             Row(
                 modifier = Modifier
@@ -121,7 +191,13 @@ fun SearchBox(
                         .fillMaxHeight()
                         .width(1.dp)
                 )
-                Text(text = "tehran", fontSize = 18.sp, modifier = Modifier.padding(8.dp, 0.dp),fontFamily = fonts, fontWeight = FontWeight.Normal)
+                Text(
+                    text = "tehran",
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(8.dp, 0.dp),
+                    fontFamily = fonts,
+                    fontWeight = FontWeight.Normal
+                )
             }
             Row(
                 modifier = Modifier
@@ -161,8 +237,19 @@ fun todayStatus() {
                 .fillMaxWidth(0.5f)
                 .offset(20.dp, 20.dp)
         ) {
-            Text(text = "Tody, 12 jan", fontSize = 28.sp, color = Color.Black, fontFamily = fonts, fontWeight = FontWeight.Light)
-            Text(text = "Snow shower", fontSize = 32.sp, fontFamily = fonts, fontWeight = FontWeight.Normal)
+            Text(
+                text = "Tody, 12 jan",
+                fontSize = 28.sp,
+                color = Color.Black,
+                fontFamily = fonts,
+                fontWeight = FontWeight.Light
+            )
+            Text(
+                text = "Snow shower",
+                fontSize = 32.sp,
+                fontFamily = fonts,
+                fontWeight = FontWeight.Normal
+            )
 
 
         }
@@ -190,7 +277,13 @@ fun todayStatus() {
                     verticalAlignment = Alignment.Bottom,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(text = "21°c", fontSize = 22.sp, color = white, fontFamily = fonts, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "21°c",
+                        fontSize = 22.sp,
+                        color = white,
+                        fontFamily = fonts,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
             Image(

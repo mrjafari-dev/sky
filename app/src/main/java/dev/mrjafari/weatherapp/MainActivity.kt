@@ -53,7 +53,6 @@ import dev.mrjafari.weatherapp.model.CountryModel
 import dev.mrjafari.weatherapp.presenter.MainPresenter
 import dev.mrjafari.weatherapp.ui.theme.*
 import dev.mrjafari.weatherapp.view.MainLayout
-import dev.mrjafari.weatherapp.view.SearchBox
 import kotlinx.coroutines.launch
 import org.jetbrains.annotations.Contract
 
@@ -243,10 +242,7 @@ fun Preview_MultipleRadioButtons(countries: MutableList<CountryModel>): String {
 
     val itemss = countries
     Column(Modifier.padding(8.dp)) {
-        /*  Text(
-              text = "Country code: ${selectedValue.value.ifEmpty { "NONE" }}",
-              modifier = Modifier.offset(20.dp)
-          )*/
+
         LazyVerticalGrid(cells = GridCells.Adaptive(minSize = 140.dp), modifier = Modifier.offset(0.dp,20.dp)) {
             items(itemss) {
                 Row(
