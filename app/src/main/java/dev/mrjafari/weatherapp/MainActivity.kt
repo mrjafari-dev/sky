@@ -48,11 +48,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.navigation.Navigation
 import dev.mrjafari.weatherapp.contract.MainContract
 import dev.mrjafari.weatherapp.model.CountryModel
 import dev.mrjafari.weatherapp.presenter.MainPresenter
 import dev.mrjafari.weatherapp.ui.theme.*
 import dev.mrjafari.weatherapp.view.MainLayout
+import dev.mrjafari.weatherapp.view.Navigation
 import kotlinx.coroutines.launch
 import org.jetbrains.annotations.Contract
 
@@ -66,10 +68,10 @@ class MainActivity : ComponentActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
 
         setContent {
-            WeatherAppTheme() {
+           /* WeatherAppTheme() {
                 bottemsheet(Countries)
-            }
-
+            }*/
+        dev.mrjafari.weatherapp.view.Navigation(Countries)
 
         }
 
@@ -145,90 +147,7 @@ fun Modifier.coloredShadow(
 @ExperimentalMaterialApi
 @Composable
 fun bottemsheet(countries: MutableList<CountryModel>) {
-    var SearchResultCountry = countries
-    var countryList = arrayListOf<CountryModel>()
 
-    val coroutineScope = rememberCoroutineScope()
-    val bottomSheetScaffoldState =
-        rememberBottomSheetScaffoldState(bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed))
-    val ContryName = remember { mutableStateOf("IR") }
-    var CountrySelected = ""
-    BottomSheetScaffold(
-        scaffoldState = bottomSheetScaffoldState,
-        sheetElevation = 30.dp,
-        sheetContent = {
-            val searchBox = remember {
-                mutableStateOf("")
-            }
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.8f)
-                    .background(white)
-            ) {
-                Column(Modifier.fillMaxSize()) {
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        TextField(value = searchBox.value, onValueChange = {
-                            searchBox.value = it
-                            if (it.length > 1) {
-
-                                countryList.clear()
-                                countries.forEach { countryModel ->
-                                    if (countryModel.country_name.contains(it)) {
-                                        countryList.add(countryModel)
-                                    }
-                                }
-                                SearchResultCountry = countryList
-                            } else if (it.length < 1) {
-                                SearchResultCountry = countries
-                                countryList.clear()
-                            }
-
-                        }, modifier = Modifier
-                            .fillMaxWidth(0.7f)
-                            .offset(15.dp, 20.dp),
-                            colors = TextFieldDefaults.textFieldColors(
-                                backgroundColor = shadow,
-                                cursorColor = Color.Black,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent
-                            ),
-                            shape = RoundedCornerShape(40.dp),
-                            label = {
-                                Text(text = "Search Country")
-                            }
-                        )
-
-                        Button(
-                            onClick = {
-                                ContryName.value = CountrySelected
-                                coroutineScope.launch {
-                                    if (bottomSheetScaffoldState.bottomSheetState.isCollapsed)
-                                        bottomSheetScaffoldState.bottomSheetState.expand()
-                                    else
-                                        bottomSheetScaffoldState.bottomSheetState.collapse()
-                                }
-                            }, modifier = Modifier
-                                .fillMaxWidth(0.7f)
-                                .offset(25.dp, 30.dp)
-                        ) {
-                            Text("Ok")
-                        }
-                    }
-
-                    CountrySelected = Preview_MultipleRadioButtons(SearchResultCountry)
-
-
-                }
-
-
-            }
-        }, sheetPeekHeight = 0.dp,
-
-    ) {
-        MainLayout(coroutineScope, bottomSheetScaffoldState, ContryName)
-
-    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)

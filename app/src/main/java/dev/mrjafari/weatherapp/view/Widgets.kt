@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import dev.mrjafari.weatherapp.coloredShadow
 import dev.mrjafari.weatherapp.ui.theme.*
@@ -42,7 +43,8 @@ import kotlinx.coroutines.launch
 fun MainLayout(
     coroutine: CoroutineScope,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
-    ContryName: MutableState<String>
+    ContryName: MutableState<String>,
+    navController: NavController
 ) {
     Box(
         modifier = Modifier
@@ -66,7 +68,11 @@ fun MainLayout(
             noteList()
         }
         FloatingActionButton(
-            onClick = { },
+            onClick = {
+                navController.navigate(Screens.DetailScreen.rout)
+
+
+            },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(20.dp),
