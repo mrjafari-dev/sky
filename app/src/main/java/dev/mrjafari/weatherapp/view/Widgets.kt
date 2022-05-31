@@ -10,11 +10,14 @@ import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,12 +29,14 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import dev.mrjafari.weatherapp.coloredShadow
+import dev.mrjafari.weatherapp.model.CountryModel
 import dev.mrjafari.weatherapp.ui.theme.*
 import kotlinx.coroutines.AbstractCoroutine
 import kotlinx.coroutines.CoroutineScope
@@ -304,4 +309,54 @@ fun todayStatus() {
 
     }
 }
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun Preview_MultipleRadioButtons(countries: MutableList<CountryModel>): String {
+
+    val selectedValue = remember { mutableStateOf("") }
+
+    val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
+    val onChangeState: (String) -> Unit = { selectedValue.value = it }
+
+    val itemss = countries
+    Column(Modifier.padding(8.dp)) {
+
+        LazyVerticalGrid(cells = GridCells.Adaptive(minSize = 140.dp), modifier = Modifier.offset(0.dp,20.dp)) {
+            items(itemss) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .selectable(
+                            selected = isSelectedItem(it.country_code),
+                            onClick = {
+                                onChangeState(it.country_code)
+                            },
+                            role = Role.RadioButton
+                        )
+                        .padding(19.dp)
+                ) {
+                    val name: String
+                    if (it.country_name.equals(""))
+                        name = it.country_code
+                    else name = it.country_name
+                    RadioButton(
+                        selected = isSelectedItem(it.country_code),
+                        onClick = null
+                    )
+                    Text(
+
+                        text = name,
+                        modifier = Modifier.fillMaxWidth(),
+                        maxLines = 1
+                    )
+                }
+            }
+
+
+        }
+    }
+    return selectedValue.value
+}
+
+
 
