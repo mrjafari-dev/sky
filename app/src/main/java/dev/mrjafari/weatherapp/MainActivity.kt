@@ -51,6 +51,8 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import dev.mrjafari.weatherapp.contract.MainContract
 import dev.mrjafari.weatherapp.model.CountryModel
+import dev.mrjafari.weatherapp.model.remote.PostService
+import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 import dev.mrjafari.weatherapp.presenter.MainPresenter
 import dev.mrjafari.weatherapp.ui.theme.*
 import dev.mrjafari.weatherapp.view.MainLayout
@@ -59,6 +61,8 @@ import kotlinx.coroutines.launch
 import org.jetbrains.annotations.Contract
 
 class MainActivity : ComponentActivity(), MainContract.View {
+    private val service =    PostService.create()
+
     val state = mutableStateOf(true)
     var text = ""
     val Countries = mutableListOf<CountryModel>()
@@ -68,10 +72,19 @@ class MainActivity : ComponentActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val posts  = produceState<List<ResponseModel>>(initialValue = emptyList()
+                , producer =
+                {
+                    value = service.getPosts()
+                }
+            )
+
+
            /* WeatherAppTheme() {
                 bottemsheet(Countries)
             }*/
         dev.mrjafari.weatherapp.view.Navigation(Countries)
+            Log.i("4654545656",posts.value.toString())
 
         }
 
