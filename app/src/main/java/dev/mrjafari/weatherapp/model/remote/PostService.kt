@@ -12,7 +12,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 
 interface PostService {
-    suspend fun getPosts() :List<ResponseModel>
+    suspend fun getPosts() :ResponseModel
     suspend fun createPost(requestModel: RequestModel) :RequestModel?
 
     companion object{

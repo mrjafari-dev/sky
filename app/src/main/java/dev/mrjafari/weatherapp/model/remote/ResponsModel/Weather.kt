@@ -3,8 +3,8 @@ package dev.mrjafari.weatherapp.model.remote.ResponsModel
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ChildModel (
-    val wind_cdir :String ,
-    val rh :Int
-        )
-
+data class Weather(
+    val icon: String,
+    val code: Long,
+    val description: String
+)

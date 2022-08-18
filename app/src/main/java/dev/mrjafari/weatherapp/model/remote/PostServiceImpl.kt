@@ -9,8 +9,8 @@ import io.ktor.http.*
 class PostServiceImpl(
     private val client : HttpClient
 ) : PostService {
-    override suspend fun getPosts(): List<ResponseModel> {
-            return client.get {
+    override suspend fun getPosts(): ResponseModel {
+            return client.post {
                 url(ApiRoutes.CityDetails)
             }
     }

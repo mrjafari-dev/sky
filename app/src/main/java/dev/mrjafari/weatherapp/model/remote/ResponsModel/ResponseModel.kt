@@ -4,5 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResponseModel(
-    val data :ArrayList<ChildModel>
+    val count: Long,
+    val data: List<Datum>,
+    val minutely: List<Minutely>
 )

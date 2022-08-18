@@ -52,6 +52,7 @@ import androidx.navigation.Navigation
 import dev.mrjafari.weatherapp.contract.MainContract
 import dev.mrjafari.weatherapp.model.CountryModel
 import dev.mrjafari.weatherapp.model.remote.PostService
+import dev.mrjafari.weatherapp.model.remote.RequestModel.RequestModel
 import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 import dev.mrjafari.weatherapp.presenter.MainPresenter
 import dev.mrjafari.weatherapp.ui.theme.*
@@ -75,7 +76,7 @@ class MainActivity : ComponentActivity(), MainContract.View {
             val posts  = produceState<List<ResponseModel>>(initialValue = emptyList()
                 , producer =
                 {
-                    value = service.getPosts()
+                    value = listOf(service.getPosts())
                 }
             )
 
@@ -84,7 +85,7 @@ class MainActivity : ComponentActivity(), MainContract.View {
                 bottemsheet(Countries)
             }*/
         dev.mrjafari.weatherapp.view.Navigation(Countries)
-            Log.i("4654545656",posts.value.toString())
+         //   Log.i("4654545656",posts.value.toString())
 
         }
 
