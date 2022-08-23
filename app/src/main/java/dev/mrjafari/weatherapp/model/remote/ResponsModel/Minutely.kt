@@ -4,10 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Minutely(
-    val timestampUTC: String,
+    val timestamp_utc: String,
     val snow: Long,
     val temp: Double,
-    val timestampLocal: String,
+    val timestamp_local: String,
     val ts: Long,
     val precip: Long
 )

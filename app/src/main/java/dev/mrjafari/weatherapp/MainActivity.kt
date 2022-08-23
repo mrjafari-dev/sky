@@ -76,11 +76,14 @@ class MainActivity : ComponentActivity(), MainContract.View {
             val posts  = produceState<List<ResponseModel>>(initialValue = emptyList()
                 , producer =
                 {
-                    value = listOf(service.getPosts())
+                    value = listOf(service.getPosts()) as List<ResponseModel>
+
                 }
             )
-
-
+           /* Log.i("64654654656","${posts.value.size}")
+            if (posts.value.size > 0){
+                Log.i("64654654656","${posts.value.get(0).data}")
+            }*/
            /* WeatherAppTheme() {
                 bottemsheet(Countries)
             }*/
