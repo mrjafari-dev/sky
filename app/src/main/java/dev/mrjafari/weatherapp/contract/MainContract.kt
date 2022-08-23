@@ -19,13 +19,17 @@ public interface MainContract {
         fun getData(onfinish :onFinishedListener)
         fun getCountries(onfinish:onsetCountryListener , context :Context)
     }
+
+
     interface View {
         fun showProgress()
         fun hideProgress()
         fun setData(text:String)
         fun onResponseFailure(throwable: Throwable?)
         fun getcountry(countryList :List<CountryModel>)
+
     }
+
     interface presenter{
         fun onDestory()
         fun request_data()

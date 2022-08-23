@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken
 import dev.mrjafari.weatherapp.contract.MainContract
 
 class MainModel:MainContract.model {
-        lateinit var aaa : Any
+
     override fun getData(onfinish: MainContract.model.onFinishedListener) {
         if (getData()) onfinish.onFinished("server value") else onfinish.onFailed()
     }

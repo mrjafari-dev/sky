@@ -80,16 +80,7 @@ class MainActivity : ComponentActivity(), MainContract.View {
 
                 }
             )
-           /* Log.i("64654654656","${posts.value.size}")
-            if (posts.value.size > 0){
-                Log.i("64654654656","${posts.value.get(0).data}")
-            }*/
-           /* WeatherAppTheme() {
-                bottemsheet(Countries)
-            }*/
-        dev.mrjafari.weatherapp.view.Navigation(Countries)
-         //   Log.i("4654545656",posts.value.toString())
-
+             Navigation(Countries)
         }
 
         val presenter = MainPresenter(this, this)

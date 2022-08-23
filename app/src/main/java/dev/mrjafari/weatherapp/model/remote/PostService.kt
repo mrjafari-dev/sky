@@ -10,6 +10,7 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.serialization.serializerOrNull
 
 interface PostService {
     suspend fun getPosts() :ResponseModel
@@ -22,7 +23,10 @@ interface PostService {
                     level = LogLevel.ALL
                 }
                 install(JsonFeature){
-                    serializer = KotlinxSerializer()
+                    serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+                        ignoreUnknownKeys = true
+                    })
+
                 }
                 install(HttpTimeout) {
                     requestTimeoutMillis = 15000L

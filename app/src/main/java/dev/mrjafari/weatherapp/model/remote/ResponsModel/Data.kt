@@ -1,7 +1,9 @@
 package dev.mrjafari.weatherapp.model.remote.ResponsModel
 
 import com.google.gson.annotations.SerializedName
+import io.ktor.http.ContentType.Application.Json
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 @Serializable
 data class Data(
@@ -19,27 +21,26 @@ data class Data(
     val state_code: String,
     val city_name: String,
     val wind_spd: Float,
-    val slp: Double,
+    val slp: Float,
     val wind_cdir_full: String,
     val sunrise: String,
-    val app_temp: Double,
-    val dni: Long,
-    val vis: Long,
+    val app_temp: Float,
+    val dni: Float,
+    val vis: Float,
     val sources: List<String>,
-    val h_angle: Long,
+    val h_angle: Float,
     val dewpt: Double,
-        val snow: Long,
     val aqi: Long,
-    val dhi: Long,
+    val dhi: Float,
     val wind_dir: Long,
     val elev_angle: Double,
-    val ghi: Long,
-    val precip: Long,
+    val ghi: Float,
     val sunset: String,
-    val lat: Double,
-    val uv: Long,
+    val lat: Float,
+    val uv: Float,
     val datetime: String,
-    val temp: Double,
+    val temp: Float,
     val weather: Weather,
     val station: String
 )
+
