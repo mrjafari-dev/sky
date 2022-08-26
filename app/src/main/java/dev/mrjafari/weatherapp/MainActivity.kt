@@ -62,7 +62,6 @@ import kotlinx.coroutines.launch
 import org.jetbrains.annotations.Contract
 
 class MainActivity : ComponentActivity(), MainContract.View {
-    private val service =    PostService.create()
 
     val state = mutableStateOf(true)
     var text = ""
@@ -73,13 +72,7 @@ class MainActivity : ComponentActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val posts  = produceState<List<ResponseModel>>(initialValue = emptyList()
-                , producer =
-                {
-                    value = listOf(service.getPosts()) as List<ResponseModel>
 
-                }
-            )
              Navigation(Countries)
         }
 
@@ -96,9 +89,10 @@ class MainActivity : ComponentActivity(), MainContract.View {
         TODO("Not yet implemented")
     }
 
-    override fun setData(text: String) {
+    override fun setData(text: ResponseModel) {
         state.value = true
-        this.text = text
+
+        Log.i("51544545",text.data[0].country_code)
     }
 
     override fun onResponseFailure(throwable: Throwable?) {

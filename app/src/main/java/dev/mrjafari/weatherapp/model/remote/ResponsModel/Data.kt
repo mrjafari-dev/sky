@@ -17,7 +17,7 @@ data class Data(
     val country_code: String,
     val clouds  : Long,
     val ts: Long,
-    val solar_rad: Long,
+    val solar_rad: Float,
     val state_code: String,
     val city_name: String,
     val wind_spd: Float,

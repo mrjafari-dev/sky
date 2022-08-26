@@ -3,6 +3,7 @@ package dev.mrjafari.weatherapp.contract
 import android.content.Context
 import android.graphics.Movie
 import dev.mrjafari.weatherapp.model.CountryModel
+import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 
 
 public interface MainContract {
@@ -10,7 +11,7 @@ public interface MainContract {
     interface model{
         interface onFinishedListener{
             fun onFailed()
-            fun onFinished(value:String)
+            fun onFinished(value: ResponseModel)
         }
         interface onsetCountryListener{
 
@@ -24,7 +25,7 @@ public interface MainContract {
     interface View {
         fun showProgress()
         fun hideProgress()
-        fun setData(text:String)
+        fun setData(text:ResponseModel)
         fun onResponseFailure(throwable: Throwable?)
         fun getcountry(countryList :List<CountryModel>)
 

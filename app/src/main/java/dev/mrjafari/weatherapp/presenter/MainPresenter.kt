@@ -4,6 +4,7 @@ import android.content.Context
 import dev.mrjafari.weatherapp.contract.MainContract
 import dev.mrjafari.weatherapp.model.CountryModel
 import dev.mrjafari.weatherapp.model.MainModel
+import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 
 class MainPresenter(val view : MainContract.View,val context :Context):MainContract.presenter , MainContract.model.onFinishedListener,MainContract.model.onsetCountryListener{
     val model : MainContract.model = MainModel()
@@ -28,7 +29,7 @@ class MainPresenter(val view : MainContract.View,val context :Context):MainContr
         view.getcountry(CountryList)
     }
 
-    override fun onFinished(value :String) {
+    override fun onFinished(value : ResponseModel) {
         view.setData(value)
     }
 }

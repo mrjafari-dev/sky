@@ -4,21 +4,40 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dev.mrjafari.weatherapp.contract.MainContract
+import dev.mrjafari.weatherapp.model.remote.PostService
+import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
+import androidx.compose.runtime.produceState
+import io.ktor.client.engine.android.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlin.system.measureTimeMillis
 
 class MainModel:MainContract.model {
+    private val service =    PostService.create()
+
 
     override fun getData(onfinish: MainContract.model.onFinishedListener) {
-        if (getData()) onfinish.onFinished("server value") else onfinish.onFailed()
+            onfinish.onFinished(a())
+
+
     }
 
+    fun a()= runBlocking {
+        delay(2000)
+        getData()
+    }
     override fun getCountries(onfinish: MainContract.model.onsetCountryListener, context: Context) {
         onfinish.onFinishSetCountry(getCountryLists(context))
 
     }
 
 
-    fun getData():Boolean{
-    return true;
+    suspend fun getData():ResponseModel{
+      val data =  service.getPosts()
+
+    return data;
 }
 
     fun getCountryFromJson(context :Context,FileName :String):String{
