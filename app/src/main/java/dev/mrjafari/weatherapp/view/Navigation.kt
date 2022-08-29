@@ -25,16 +25,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dev.mrjafari.weatherapp.model.CountryModel
+import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 import dev.mrjafari.weatherapp.ui.theme.shadow
 import dev.mrjafari.weatherapp.ui.theme.white
 import kotlinx.coroutines.launch
 
 @Composable
-fun Navigation(countries: MutableList<CountryModel>) {
+fun Navigation(countries: MutableList<CountryModel>, responsemodel: ResponseModel) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screens.MainScreen.rout) {
         composable(Screens.MainScreen.rout) {
-            MainScreen(navController = navController,countries)
+            MainScreen(navController = navController,countries,responsemodel)
         }
         composable(
             route = Screens.DetailScreen.rout,

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import dev.mrjafari.weatherapp.model.CountryModel
+import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 import dev.mrjafari.weatherapp.ui.theme.fonts
 import dev.mrjafari.weatherapp.ui.theme.green
 import dev.mrjafari.weatherapp.ui.theme.shadow
@@ -31,7 +32,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainScreen(navController: NavController, countries: MutableList<CountryModel>) {
+fun MainScreen(navController: NavController, countries: MutableList<CountryModel>,responseModel: ResponseModel) {
     var SearchResultCountry = countries
     var countryList = arrayListOf<CountryModel>()
 
@@ -114,7 +115,7 @@ fun MainScreen(navController: NavController, countries: MutableList<CountryModel
         sheetPeekHeight = 0.dp,
 
         ) {
-        MainLayout(coroutineScope, bottomSheetScaffoldState, ContryName, navController)
+        MainLayout(coroutineScope, bottomSheetScaffoldState, ContryName, navController,responseModel)
 
     }
 }

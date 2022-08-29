@@ -35,8 +35,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import coil.compose.rememberImagePainter
 import dev.mrjafari.weatherapp.coloredShadow
 import dev.mrjafari.weatherapp.model.CountryModel
+import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 import dev.mrjafari.weatherapp.ui.theme.*
 import kotlinx.coroutines.AbstractCoroutine
 import kotlinx.coroutines.CoroutineScope
@@ -49,7 +51,8 @@ fun MainLayout(
     coroutine: CoroutineScope,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
     ContryName: MutableState<String>,
-    navController: NavController
+    navController: NavController,
+    responseModel: ResponseModel
 ) {
     Box(
         modifier = Modifier
@@ -68,8 +71,10 @@ fun MainLayout(
                 .padding(20.dp, 30.dp, 20.dp)
         ) {
 
-            searchBox(coroutine, bottomSheetScaffoldState, ContryName)
-            todayStatus()
+            searchBox(coroutine, bottomSheetScaffoldState, ContryName,responseModel.data[0].city_name )
+            val date = responseModel.data[0].datetime.split(":")
+            val value = date[0].split("-")
+            todayStatus("Today ,"+value[0]+"\n"+"     "+value[1]+"-"+value[2], responseModel.data[0].weather.description,responseModel.data[0].temp,responseModel.data[0].weather.icon)
             noteList()
         }
         FloatingActionButton(
@@ -144,7 +149,8 @@ fun noteListItem(text: String) {
 fun searchBox(
     coroutineScope: CoroutineScope,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
-    ContryName: MutableState<String>
+    ContryName: MutableState<String>,
+    Cityname :String
 ) {
     Card(
         modifier = Modifier
@@ -203,7 +209,7 @@ fun searchBox(
                         .width(1.dp)
                 )
                 Text(
-                    text = "tehran",
+                    text = Cityname,
                     fontSize = 18.sp,
                     modifier = Modifier.padding(8.dp, 0.dp),
                     fontFamily = fonts,
@@ -236,7 +242,7 @@ fun searchBox(
 }
 
 @Composable
-fun todayStatus() {
+fun todayStatus(date:String , weatherStatus :String , temp :Float,icon :String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -249,14 +255,14 @@ fun todayStatus() {
                 .offset(20.dp, 20.dp)
         ) {
             Text(
-                text = "Tody, 12 jan",
+                text = date,
                 fontSize = 28.sp,
                 color = Color.Black,
                 fontFamily = fonts,
                 fontWeight = FontWeight.Light
             )
             Text(
-                text = "Snow shower",
+                text = weatherStatus,
                 fontSize = 32.sp,
                 fontFamily = fonts,
                 fontWeight = FontWeight.Normal
@@ -289,7 +295,7 @@ fun todayStatus() {
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "21°c",
+                        text = "$temp °c",
                         fontSize = 22.sp,
                         color = white,
                         fontFamily = fonts,
@@ -298,12 +304,15 @@ fun todayStatus() {
                 }
             }
             Image(
-                bitmap = bitmap,
-                contentDescription = "",
                 modifier = Modifier
-                    .size(125.dp)
+                    .size(105.dp),
+                painter = rememberImagePainter(data= "https://www.weatherbit.io/static/img/icons/$icon.png",
+                builder = {
 
+                }),
+                contentDescription = "content discription"
             )
+
 
         }
 

@@ -1,47 +1,19 @@
 package dev.mrjafari.weatherapp
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
-import android.app.Activity
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Window
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Device
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -63,7 +35,7 @@ import org.jetbrains.annotations.Contract
 
 class MainActivity : ComponentActivity(), MainContract.View {
 
-    val state = mutableStateOf(true)
+    var data: MutableState<ResponseModel>? = null
     var text = ""
     val Countries = mutableListOf<CountryModel>()
 
@@ -73,7 +45,7 @@ class MainActivity : ComponentActivity(), MainContract.View {
 
         setContent {
 
-             Navigation(Countries)
+             Navigation(Countries,data!!.value)
         }
 
         val presenter = MainPresenter(this, this)
@@ -89,10 +61,10 @@ class MainActivity : ComponentActivity(), MainContract.View {
         TODO("Not yet implemented")
     }
 
-    override fun setData(text: ResponseModel) {
-        state.value = true
+    override fun setData(value: ResponseModel) {
 
-        Log.i("51544545",text.data[0].country_code)
+       data = mutableStateOf(value)
+        Log.i("51544545",value.data[0].country_code)
     }
 
     override fun onResponseFailure(throwable: Throwable?) {

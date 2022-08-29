@@ -25,7 +25,7 @@ public interface MainContract {
     interface View {
         fun showProgress()
         fun hideProgress()
-        fun setData(text:ResponseModel)
+        fun setData(value:ResponseModel)
         fun onResponseFailure(throwable: Throwable?)
         fun getcountry(countryList :List<CountryModel>)
 
