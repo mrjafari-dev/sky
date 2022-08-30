@@ -6,7 +6,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
@@ -74,8 +73,15 @@ fun MainLayout(
             searchBox(coroutine, bottomSheetScaffoldState, ContryName,responseModel.data[0].city_name )
             val date = responseModel.data[0].datetime.split(":")
             val value = date[0].split("-")
-            todayStatus("Today ,"+value[0]+"\n"+"     "+value[1]+"-"+value[2], responseModel.data[0].weather.description,responseModel.data[0].temp,responseModel.data[0].weather.icon)
-            noteList()
+            todayStatus("Today ,"+value[0]+"\n"+value[1]+"-"+value[2], responseModel.data[0].weather.description,responseModel.data[0].temp,responseModel.data[0].weather.icon)
+            var list  = arrayListOf<String>()
+            list.add("Wind speed (Default m/s) : "+responseModel.data[0].wind_spd)
+            list.add("Sea level pressure (mb) : "+responseModel.data[0].slp)
+            list.add("Verbal wind direction : "+responseModel.data[0].wind_cdir_full)
+            list.add("Relative humidity (%) : "+responseModel.data[0].rh)
+            list.add("Air Quality Index [US - EPA standard 0 - +500] : "+responseModel.data[0].aqi)
+            Spacer(modifier = Modifier.height(30.dp))
+            noteList(list)
         }
         FloatingActionButton(
             onClick = {
@@ -96,9 +102,10 @@ fun MainLayout(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun noteList() {
-    val tes = arrayListOf<String>("mohammdfdsfdfsdfdsfsfsdfxczxadreza ", "Alireza ", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli")
-    tes.add("sfd")
+fun noteList( tes : ArrayList<String>) {
+
+ /*   val tes = arrayListOf<String>("mohammdfdsfdfsdfdsfsfsdfxczxadreza ", "Alireza ", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli")
+    tes.add("sfd")*/
     Column(
         Modifier
             .padding(8.dp)
@@ -109,7 +116,7 @@ fun noteList() {
               modifier = Modifier.offset(20.dp)
           )*/
         LazyVerticalGrid(
-            cells = GridCells.Adaptive(minSize = 140.dp),
+            cells = GridCells.Adaptive(minSize = 110.dp),
             modifier = Modifier
                 .offset(0.dp, 0.dp)
                 .fillMaxSize(),
@@ -129,14 +136,26 @@ fun noteListItem(text: String) {
 
     Card(modifier = Modifier
         .fillMaxSize()
-        .padding(10.dp)
-        .height(150.dp)
+        .padding(5.dp)
+        .height(120.dp)
         .aspectRatio(1f),
         backgroundColor = cardColor,
         elevation = 0.dp,
         shape = RoundedCornerShape(20.dp)
     ) {
-        Column() {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(5.dp))
+            Image(
+                modifier = Modifier
+                    .size(35.dp),
+                painter = rememberImagePainter(data= "https://cdn-icons-png.flaticon.com/512/5532/5532989.png",
+                    builder = {
+
+                    }),
+                contentDescription = "content discription"
+            )
             Text(text = text, modifier = Modifier.padding(10.dp))
 
         }
@@ -255,18 +274,20 @@ fun todayStatus(date:String , weatherStatus :String , temp :Float,icon :String) 
                 .offset(20.dp, 20.dp)
         ) {
             Text(
+                text = weatherStatus,
+                fontSize = 25.sp,
+                fontFamily = fonts,
+                fontWeight = FontWeight.Normal
+            )
+
+            Text(
                 text = date,
-                fontSize = 28.sp,
+                fontSize = 23.sp,
                 color = Color.Black,
                 fontFamily = fonts,
                 fontWeight = FontWeight.Light
             )
-            Text(
-                text = weatherStatus,
-                fontSize = 32.sp,
-                fontFamily = fonts,
-                fontWeight = FontWeight.Normal
-            )
+
 
 
         }
