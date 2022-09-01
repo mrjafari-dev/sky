@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import coil.compose.rememberImagePainter
 import dev.mrjafari.weatherapp.coloredShadow
 import dev.mrjafari.weatherapp.model.CountryModel
+import dev.mrjafari.weatherapp.model.ListModel
 import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 import dev.mrjafari.weatherapp.ui.theme.*
 import kotlinx.coroutines.AbstractCoroutine
@@ -74,12 +75,13 @@ fun MainLayout(
             val date = responseModel.data[0].datetime.split(":")
             val value = date[0].split("-")
             todayStatus("Today ,"+value[0]+"\n"+value[1]+"-"+value[2], responseModel.data[0].weather.description,responseModel.data[0].temp,responseModel.data[0].weather.icon)
-            var list  = arrayListOf<String>()
-            list.add("Wind speed (Default m/s) : "+responseModel.data[0].wind_spd)
-            list.add("Sea level pressure (mb) : "+responseModel.data[0].slp)
-            list.add("Verbal wind direction : "+responseModel.data[0].wind_cdir_full)
-            list.add("Relative humidity (%) : "+responseModel.data[0].rh)
-            list.add("Air Quality Index [US - EPA standard 0 - +500] : "+responseModel.data[0].aqi)
+            var list  = arrayListOf<ListModel>()
+
+            list.add(ListModel( "https://cdn-icons-png.flaticon.com/512/1375/1375420.png", "Wind speed (Default m/s) : "+responseModel.data[0].wind_spd))
+            list.add(ListModel("https://cdn-icons-png.flaticon.com/512/3061/3061188.png","Sea level pressure (mb) : "+responseModel.data[0].slp))
+            list.add(ListModel("https://cdn-icons-png.flaticon.com/512/2272/2272225.png","Verbal wind direction : "+responseModel.data[0].wind_cdir_full))
+            list.add(ListModel("https://cdn-icons-png.flaticon.com/512/2272/2272220.png","Relative humidity (%) : "+responseModel.data[0].rh))
+            list.add(ListModel("https://cdn-icons-png.flaticon.com/512/5276/5276076.png","Air Quality Index [US - EPA standard 0 - +500] : "+responseModel.data[0].aqi))
             Spacer(modifier = Modifier.height(30.dp))
             noteList(list)
         }
@@ -95,28 +97,23 @@ fun MainLayout(
             backgroundColor = blue,
         ) {
             Icon(painter = painterResource(id = dev.mrjafari.weatherapp.R.drawable.ic_baseline_add_24), contentDescription ="", tint = white )
-            Log.i("45656465", "")
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun noteList( tes : ArrayList<String>) {
+fun noteList( tes : ArrayList<ListModel>) {
 
- /*   val tes = arrayListOf<String>("mohammdfdsfdfsdfdsfsfsdfxczxadreza ", "Alireza ", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli", "gogoli")
-    tes.add("sfd")*/
+
     Column(
         Modifier
             .padding(8.dp)
             .fillMaxSize()
     ) {
-        /*  Text(
-              text = "Country code: ${selectedValue.value.ifEmpty { "NONE" }}",
-              modifier = Modifier.offset(20.dp)
-          )*/
+
         LazyVerticalGrid(
-            cells = GridCells.Adaptive(minSize = 110.dp),
+            cells = GridCells.Adaptive(minSize = 90.dp),
             modifier = Modifier
                 .offset(0.dp, 0.dp)
                 .fillMaxSize(),
@@ -125,38 +122,39 @@ fun noteList( tes : ArrayList<String>) {
             )
         ) {
             items(items = tes) {
-                noteListItem(text = it.toString())
+                noteListItem(text = it.txt , img = it.img)
             }
         }
     }
 }
 
 @Composable
-fun noteListItem(text: String) {
+fun noteListItem(text: String , img :String) {
 
     Card(modifier = Modifier
         .fillMaxSize()
-        .padding(5.dp)
-        .height(120.dp)
+        .padding(3.dp)
+        .height(115.dp)
         .aspectRatio(1f),
         backgroundColor = cardColor,
         elevation = 0.dp,
         shape = RoundedCornerShape(20.dp)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
         ) {
             Spacer(modifier = Modifier.height(5.dp))
             Image(
                 modifier = Modifier
-                    .size(35.dp),
-                painter = rememberImagePainter(data= "https://cdn-icons-png.flaticon.com/512/5532/5532989.png",
+                    .size(40.dp),
+                painter = rememberImagePainter(data= img,
                     builder = {
 
                     }),
                 contentDescription = "content discription"
             )
-            Text(text = text, modifier = Modifier.padding(10.dp))
+            Text(text = text, modifier = Modifier.padding(10.dp), fontFamily = fonts , fontWeight = FontWeight.Light , fontSize = 13.sp)
 
         }
     }
