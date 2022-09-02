@@ -1,5 +1,6 @@
 package dev.mrjafari.weatherapp.view
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -35,9 +36,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import coil.compose.rememberImagePainter
+import dev.mrjafari.weatherapp.MainActivity
 import dev.mrjafari.weatherapp.coloredShadow
 import dev.mrjafari.weatherapp.model.CountryModel
 import dev.mrjafari.weatherapp.model.ListModel
+import dev.mrjafari.weatherapp.model.remote.RequestModel.RequestModel
 import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 import dev.mrjafari.weatherapp.ui.theme.*
 import kotlinx.coroutines.AbstractCoroutine
@@ -45,6 +48,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("UnrememberedMutableState", "RememberReturnType")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MainLayout(
@@ -54,6 +58,7 @@ fun MainLayout(
     navController: NavController,
     responseModel: ResponseModel
 ) {
+
     Box(
         modifier = Modifier
             /*.background(
@@ -72,9 +77,10 @@ fun MainLayout(
         ) {
 
             searchBox(coroutine, bottomSheetScaffoldState, ContryName,responseModel.data[0].city_name )
+
             val date = responseModel.data[0].datetime.split(":")
             val value = date[0].split("-")
-            todayStatus("Today ,"+value[0]+"\n"+value[1]+"-"+value[2], responseModel.data[0].weather.description,responseModel.data[0].temp,responseModel.data[0].weather.icon)
+            todayStatus("Today ,"+value[0]+"\n"+value[1]+"-"+value[2],  responseModel.data[0].weather.description,responseModel.data[0].temp,responseModel.data[0].weather.icon)
             var list  = arrayListOf<ListModel>()
 
             list.add(ListModel( "https://cdn-icons-png.flaticon.com/512/1375/1375420.png", "Wind speed (Default m/s) : "+responseModel.data[0].wind_spd))
@@ -248,7 +254,12 @@ fun searchBox(
                     Image(
                         painter = painterResource(dev.mrjafari.weatherapp.R.drawable.search),
                         contentDescription = "",
-                        modifier = Modifier.size(25.dp)
+                        modifier = Modifier
+                            .size(25.dp)
+                            .clickable {
+                                val model = RequestModel("US", "Raleigh")
+                                MainActivity().presenter.request_data(model)
+                            }
                     )
                 }
 

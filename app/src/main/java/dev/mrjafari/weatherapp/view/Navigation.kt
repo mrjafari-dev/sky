@@ -1,5 +1,6 @@
 package dev.mrjafari.weatherapp.view
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -32,6 +33,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun Navigation(countries: MutableList<CountryModel>, responsemodel: ResponseModel) {
+    Log.i("51544545",responsemodel.data[0].country_code)
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screens.MainScreen.rout) {
         composable(Screens.MainScreen.rout) {

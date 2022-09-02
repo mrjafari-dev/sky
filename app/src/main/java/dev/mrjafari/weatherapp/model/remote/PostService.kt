@@ -13,7 +13,7 @@ import io.ktor.http.*
 import kotlinx.serialization.serializerOrNull
 
 interface PostService {
-    suspend fun getPosts() :ResponseModel
+    suspend fun getPosts(requestModel: RequestModel) :ResponseModel
     suspend fun createPost(requestModel: RequestModel) :RequestModel?
 
     companion object{

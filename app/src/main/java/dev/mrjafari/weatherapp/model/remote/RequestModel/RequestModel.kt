@@ -5,7 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RequestModel(
     val country :String,
-    val city :String,
-    val key :String
+    val city :String
 
 )

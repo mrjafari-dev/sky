@@ -3,6 +3,7 @@ package dev.mrjafari.weatherapp.contract
 import android.content.Context
 import android.graphics.Movie
 import dev.mrjafari.weatherapp.model.CountryModel
+import dev.mrjafari.weatherapp.model.remote.RequestModel.RequestModel
 import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 
 
@@ -17,7 +18,7 @@ public interface MainContract {
 
             fun onFinishSetCountry(CountryList :List<CountryModel>)
         }
-        fun getData(onfinish :onFinishedListener)
+        fun getData(onfinish :onFinishedListener, requestModel: RequestModel)
         fun getCountries(onfinish:onsetCountryListener , context :Context)
     }
 
@@ -33,7 +34,7 @@ public interface MainContract {
 
     interface presenter{
         fun onDestory()
-        fun request_data()
+        fun request_data(requestModel: RequestModel)
         fun CountryRequest()
     }
 }

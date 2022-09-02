@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -14,28 +15,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import dev.mrjafari.weatherapp.contract.MainContract
 import dev.mrjafari.weatherapp.model.CountryModel
+import dev.mrjafari.weatherapp.model.ViewDataModel
 import dev.mrjafari.weatherapp.model.remote.PostService
 import dev.mrjafari.weatherapp.model.remote.RequestModel.RequestModel
+import dev.mrjafari.weatherapp.model.remote.ResponsModel.Data
 import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
+import dev.mrjafari.weatherapp.model.remote.ResponsModel.Weather
 import dev.mrjafari.weatherapp.presenter.MainPresenter
 import dev.mrjafari.weatherapp.ui.theme.*
 import dev.mrjafari.weatherapp.view.MainLayout
 import dev.mrjafari.weatherapp.view.Navigation
 import kotlinx.coroutines.launch
 import org.jetbrains.annotations.Contract
-
 class MainActivity : ComponentActivity(), MainContract.View {
+    val presenter = MainPresenter(this, this)
 
-    var data: MutableState<ResponseModel>? = null
+    var data = mutableStateOf(ResponseModel)
+    var a= mutableStateOf(ViewDataModel("","","",""))
+    val test = mutableStateOf("ali")
     var text = ""
     val Countries = mutableListOf<CountryModel>()
 
@@ -45,12 +50,23 @@ class MainActivity : ComponentActivity(), MainContract.View {
 
         setContent {
 
-             Navigation(Countries,data!!.value)
+                   // Navigation(Countries,data!!.value)
+                Text(text = test.value , fontSize = 45.sp , modifier = Modifier.clickable {
+                    test.value = "asgar"
+                    val model = RequestModel("US","newyork")
+
+                    presenter.request_data(model)
+                    
+                })
+
+
         }
 
-        val presenter = MainPresenter(this, this)
-        presenter.request_data()
+        val model = RequestModel("IR","mashhad")
+
+       presenter.request_data(model)
         presenter.CountryRequest()
+
     }
 
     override fun showProgress() {
@@ -62,8 +78,8 @@ class MainActivity : ComponentActivity(), MainContract.View {
     }
 
     override fun setData(value: ResponseModel) {
-
-       data = mutableStateOf(value)
+       data.value  = value
+        test.value = value.data[0].city_name
         Log.i("51544545",value.data[0].country_code)
     }
 
