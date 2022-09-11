@@ -47,7 +47,17 @@ import kotlinx.coroutines.AbstractCoroutine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-
+val country  = mutableStateOf("")
+val city  = mutableStateOf("")
+val weather_description  = mutableStateOf("")
+val date  = mutableStateOf("")
+val temp  = mutableStateOf("")
+val icon  = mutableStateOf("")
+val wind_spd  = mutableStateOf("")
+val seaLevel  = mutableStateOf("")
+val verbalWind  = mutableStateOf("")
+val realitive  = mutableStateOf("")
+val airQuality  = mutableStateOf("")
 @SuppressLint("UnrememberedMutableState", "RememberReturnType")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -78,12 +88,12 @@ fun MainLayout(
 
             searchBox(coroutine, bottomSheetScaffoldState, ContryName,responseModel.data[0].city_name )
 
-            val date = responseModel.data[0].datetime.split(":")
+            val date = date.value.split(":")
             val value = date[0].split("-")
-            todayStatus("Today ,"+value[0]+"\n"+value[1]+"-"+value[2],  responseModel.data[0].weather.description,responseModel.data[0].temp,responseModel.data[0].weather.icon)
+            todayStatus("Today ,"+value[0]+"\n"+value[1]+"-"+value[2])
             var list  = arrayListOf<ListModel>()
 
-            list.add(ListModel( "https://cdn-icons-png.flaticon.com/512/1375/1375420.png", "Wind speed (Default m/s) : "+responseModel.data[0].wind_spd))
+            list.add(ListModel( "https://cdn-icons-png.flaticon.com/512/1375/1375420.png", "Wind speed (Default m/s) : "+ wind_spd))
             list.add(ListModel("https://cdn-icons-png.flaticon.com/512/3061/3061188.png","Sea level pressure (mb) : "+responseModel.data[0].slp))
             list.add(ListModel("https://cdn-icons-png.flaticon.com/512/2272/2272225.png","Verbal wind direction : "+responseModel.data[0].wind_cdir_full))
             list.add(ListModel("https://cdn-icons-png.flaticon.com/512/2272/2272220.png","Relative humidity (%) : "+responseModel.data[0].rh))
@@ -211,7 +221,7 @@ fun searchBox(
                     contentDescription = "content discription"
                 )
                 Text(
-                    text = ContryName.value,
+                    text = country.value,
                     fontSize = 16.sp,
                     fontFamily = fonts,
                     fontWeight = FontWeight.Bold
@@ -232,7 +242,7 @@ fun searchBox(
                         .width(1.dp)
                 )
                 Text(
-                    text = Cityname,
+                    text = city.value,
                     fontSize = 18.sp,
                     modifier = Modifier.padding(8.dp, 0.dp),
                     fontFamily = fonts,
@@ -270,7 +280,7 @@ fun searchBox(
 }
 
 @Composable
-fun todayStatus(date:String , weatherStatus :String , temp :Float,icon :String) {
+fun todayStatus(date:String ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -283,7 +293,7 @@ fun todayStatus(date:String , weatherStatus :String , temp :Float,icon :String) 
                 .offset(20.dp, 20.dp)
         ) {
             Text(
-                text = weatherStatus,
+                text = weather_description.value,
                 fontSize = 25.sp,
                 fontFamily = fonts,
                 fontWeight = FontWeight.Normal
@@ -325,7 +335,7 @@ fun todayStatus(date:String , weatherStatus :String , temp :Float,icon :String) 
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "$temp °c",
+                        text = temp.value,
                         fontSize = 22.sp,
                         color = white,
                         fontFamily = fonts,
@@ -336,7 +346,7 @@ fun todayStatus(date:String , weatherStatus :String , temp :Float,icon :String) 
             Image(
                 modifier = Modifier
                     .size(105.dp),
-                painter = rememberImagePainter(data= "https://www.weatherbit.io/static/img/icons/$icon.png",
+                painter = rememberImagePainter(data= "https://www.weatherbit.io/static/img/icons/${icon.value}.png",
                 builder = {
 
                 }),

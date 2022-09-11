@@ -31,35 +31,27 @@ import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 import dev.mrjafari.weatherapp.model.remote.ResponsModel.Weather
 import dev.mrjafari.weatherapp.presenter.MainPresenter
 import dev.mrjafari.weatherapp.ui.theme.*
-import dev.mrjafari.weatherapp.view.MainLayout
-import dev.mrjafari.weatherapp.view.Navigation
+import dev.mrjafari.weatherapp.view.*
 import kotlinx.coroutines.launch
 import org.jetbrains.annotations.Contract
+
+
 class MainActivity : ComponentActivity(), MainContract.View {
+
     val presenter = MainPresenter(this, this)
 
-    var data = mutableStateOf(ResponseModel)
-    var a= mutableStateOf(ViewDataModel("","","",""))
-    val test = mutableStateOf("ali")
-    var text = ""
+    lateinit var dataa :MutableState<ResponseModel>
+    var flag = mutableStateOf(true)
+   // var a= mutableStateOf(ViewDataModel("","","",""))
+    val test  = mutableStateOf("")
+
     val Countries = mutableListOf<CountryModel>()
 
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
-
-                   // Navigation(Countries,data!!.value)
-                Text(text = test.value , fontSize = 45.sp , modifier = Modifier.clickable {
-                    test.value = "asgar"
-                    val model = RequestModel("US","newyork")
-
-                    presenter.request_data(model)
-                    
-                })
-
-
+                        Navigation(Countries,dataa)
         }
 
         val model = RequestModel("IR","mashhad")
@@ -78,9 +70,23 @@ class MainActivity : ComponentActivity(), MainContract.View {
     }
 
     override fun setData(value: ResponseModel) {
-       data.value  = value
+        if (flag.value){
+            dataa = mutableStateOf(value)
+            flag.value =false
+        }else{
+            flag.value =true
+        }
+        dataa.value = value
         test.value = value.data[0].city_name
-        Log.i("51544545",value.data[0].country_code)
+
+        country.value =value.data[0].country_code
+        city.value =value.data[0].city_name
+        date.value = value.data[0].datetime
+        weather_description.value =value.data[0].weather.description
+        temp.value =value.data[0].temp.toString()
+        icon.value =value.data[0].temp.toString()
+        wind_spd.value = value.data[0].wind_spd.toString()
+        Log.i("51544545","main"+ value.data[0].country_code)
     }
 
     override fun onResponseFailure(throwable: Throwable?) {

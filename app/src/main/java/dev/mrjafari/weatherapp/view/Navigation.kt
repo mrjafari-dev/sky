@@ -10,10 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,12 +29,13 @@ import dev.mrjafari.weatherapp.ui.theme.white
 import kotlinx.coroutines.launch
 
 @Composable
-fun Navigation(countries: MutableList<CountryModel>, responsemodel: ResponseModel) {
-    Log.i("51544545",responsemodel.data[0].country_code)
+fun Navigation(countries: MutableList<CountryModel>, responsemodel: MutableState<ResponseModel> ) {
+
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screens.MainScreen.rout) {
         composable(Screens.MainScreen.rout) {
-            MainScreen(navController = navController,countries,responsemodel)
+            Log.i("51544545","nav"+ responsemodel.value.data[0].country_code)
+            MainScreen(navController = navController,countries,responsemodel.value)
         }
         composable(
             route = Screens.DetailScreen.rout,
