@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import dev.mrjafari.weatherapp.contract.MainContract
 import dev.mrjafari.weatherapp.model.CountryModel
+import dev.mrjafari.weatherapp.model.ListModel
 import dev.mrjafari.weatherapp.model.ViewDataModel
 import dev.mrjafari.weatherapp.model.remote.PostService
 import dev.mrjafari.weatherapp.model.remote.RequestModel.RequestModel
@@ -84,8 +85,14 @@ class MainActivity : ComponentActivity(), MainContract.View {
         date.value = value.data[0].datetime
         weather_description.value =value.data[0].weather.description
         temp.value =value.data[0].temp.toString()
-        icon.value =value.data[0].temp.toString()
-        wind_spd.value = value.data[0].wind_spd.toString()
+        icon.value =value.data[0].weather.icon
+        val statusItem = arrayListOf<ListModel>()
+        statusItem.add(ListModel("https://cdn-icons-png.flaticon.com/512/1375/1375420.png","Wind speed : "+ value.data[0].wind_spd.toString()))
+        statusItem.add(ListModel("https://cdn-icons-png.flaticon.com/512/3061/3061188.png","Sea level : "+value.data[0].slp))
+        statusItem.add(ListModel("https://cdn-icons-png.flaticon.com/512/2272/2272225.png","wind direction : "+value.data[0].wind_cdir_full))
+        statusItem.add(ListModel("https://cdn-icons-png.flaticon.com/512/2272/2272220.png","Relative humidity : "+value.data[0].rh))
+        statusItem.add(ListModel("https://cdn-icons-png.flaticon.com/512/5276/5276076.png","Air Quality : "+value.data[0].aqi))
+        StatusList.swapStatusList(statusItem)
         Log.i("51544545","main"+ value.data[0].country_code)
     }
 

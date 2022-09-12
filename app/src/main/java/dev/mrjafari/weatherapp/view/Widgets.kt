@@ -14,10 +14,8 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +38,7 @@ import dev.mrjafari.weatherapp.MainActivity
 import dev.mrjafari.weatherapp.coloredShadow
 import dev.mrjafari.weatherapp.model.CountryModel
 import dev.mrjafari.weatherapp.model.ListModel
+import dev.mrjafari.weatherapp.model.ViewValueModel
 import dev.mrjafari.weatherapp.model.remote.RequestModel.RequestModel
 import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 import dev.mrjafari.weatherapp.ui.theme.*
@@ -53,11 +52,8 @@ val weather_description  = mutableStateOf("")
 val date  = mutableStateOf("")
 val temp  = mutableStateOf("")
 val icon  = mutableStateOf("")
-val wind_spd  = mutableStateOf("")
-val seaLevel  = mutableStateOf("")
-val verbalWind  = mutableStateOf("")
-val realitive  = mutableStateOf("")
-val airQuality  = mutableStateOf("")
+var StatusList = mutableStateListOf<ListModel>()
+
 @SuppressLint("UnrememberedMutableState", "RememberReturnType")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -91,15 +87,9 @@ fun MainLayout(
             val date = date.value.split(":")
             val value = date[0].split("-")
             todayStatus("Today ,"+value[0]+"\n"+value[1]+"-"+value[2])
-            var list  = arrayListOf<ListModel>()
 
-            list.add(ListModel( "https://cdn-icons-png.flaticon.com/512/1375/1375420.png", "Wind speed (Default m/s) : "+ wind_spd))
-            list.add(ListModel("https://cdn-icons-png.flaticon.com/512/3061/3061188.png","Sea level pressure (mb) : "+responseModel.data[0].slp))
-            list.add(ListModel("https://cdn-icons-png.flaticon.com/512/2272/2272225.png","Verbal wind direction : "+responseModel.data[0].wind_cdir_full))
-            list.add(ListModel("https://cdn-icons-png.flaticon.com/512/2272/2272220.png","Relative humidity (%) : "+responseModel.data[0].rh))
-            list.add(ListModel("https://cdn-icons-png.flaticon.com/512/5276/5276076.png","Air Quality Index [US - EPA standard 0 - +500] : "+responseModel.data[0].aqi))
             Spacer(modifier = Modifier.height(30.dp))
-            noteList(list)
+            noteList()
         }
         FloatingActionButton(
             onClick = {
@@ -116,10 +106,13 @@ fun MainLayout(
         }
     }
 }
-
+    fun <T> SnapshotStateList<T>.swapStatusList(newList: List<T>){
+    clear()
+    addAll(newList)
+}
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun noteList( tes : ArrayList<ListModel>) {
+fun noteList( ) {
 
 
     Column(
@@ -137,7 +130,7 @@ fun noteList( tes : ArrayList<ListModel>) {
                start= 0.dp, top =  0.dp, end = 0.dp, bottom =  0.dp
             )
         ) {
-            items(items = tes) {
+            items(items = StatusList) {
                 noteListItem(text = it.txt , img = it.img)
             }
         }
@@ -163,14 +156,14 @@ fun noteListItem(text: String , img :String) {
             Spacer(modifier = Modifier.height(5.dp))
             Image(
                 modifier = Modifier
-                    .size(40.dp),
+                    .size(55.dp),
                 painter = rememberImagePainter(data= img,
                     builder = {
 
                     }),
                 contentDescription = "content discription"
             )
-            Text(text = text, modifier = Modifier.padding(10.dp), fontFamily = fonts , fontWeight = FontWeight.Light , fontSize = 13.sp)
+            Text(text = text, modifier = Modifier.padding(10.dp).height(50.dp), fontFamily = fonts , fontWeight = FontWeight.Light , fontSize = 13.sp)
 
         }
     }
@@ -317,7 +310,7 @@ fun todayStatus(date:String ) {
                 .offset(20.dp, 20.dp),
         )
         {
-            val bitmap = ImageBitmap.imageResource(id = dev.mrjafari.weatherapp.R.drawable.sun)
+
 
             Row(
                 modifier = Modifier.fillMaxSize(),
