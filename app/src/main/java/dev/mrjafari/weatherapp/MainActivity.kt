@@ -1,13 +1,19 @@
 package dev.mrjafari.weatherapp
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
@@ -18,6 +24,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -41,10 +49,9 @@ class MainActivity : ComponentActivity(), MainContract.View {
 
     val presenter = MainPresenter(this, this)
 
-    lateinit var dataa :MutableState<ResponseModel>
+    lateinit var dataa: MutableState<ResponseModel>
     var flag = mutableStateOf(true)
-   // var a= mutableStateOf(ViewDataModel("","","",""))
-    val test  = mutableStateOf("")
+    val test = mutableStateOf(false)
 
     val Countries = mutableListOf<CountryModel>()
 
@@ -52,48 +59,78 @@ class MainActivity : ComponentActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-                        Navigation(Countries,dataa)
+            Navigation(Countries, dataa)
+
+
+
         }
 
-        val model = RequestModel("IR","mashhad")
+        val model = RequestModel("IR", "mashhad")
 
-       presenter.request_data(model)
+        presenter.request_data(model)
         presenter.CountryRequest()
 
     }
 
+
     override fun showProgress() {
-        TODO("Not yet implemented")
+      //  test.value =true
+     //   p.value =true
     }
 
     override fun hideProgress() {
-        TODO("Not yet implemented")
+        p.value =false
     }
 
     override fun setData(value: ResponseModel) {
-        if (flag.value){
+        if (flag.value) {
             dataa = mutableStateOf(value)
-            flag.value =false
-        }else{
-            flag.value =true
+            flag.value = false
+        } else {
+            flag.value = true
         }
         dataa.value = value
-        test.value = value.data[0].city_name
+       // test.value = value.data[0].city_name
 
-        country.value =value.data[0].country_code
-        city.value =value.data[0].city_name
+        country.value = value.data[0].country_code
+        city.value = value.data[0].city_name
         date.value = value.data[0].datetime
-        weather_description.value =value.data[0].weather.description
-        temp.value =value.data[0].temp.toString()
-        icon.value =value.data[0].weather.icon
+        weather_description.value = value.data[0].weather.description
+        temp.value = value.data[0].temp.toString()
+        icon.value = value.data[0].weather.icon
         val statusItem = arrayListOf<ListModel>()
-        statusItem.add(ListModel("https://cdn-icons-png.flaticon.com/512/1375/1375420.png","Wind speed : "+ value.data[0].wind_spd.toString()))
-        statusItem.add(ListModel("https://cdn-icons-png.flaticon.com/512/3061/3061188.png","Sea level : "+value.data[0].slp))
-        statusItem.add(ListModel("https://cdn-icons-png.flaticon.com/512/2272/2272225.png","wind direction : "+value.data[0].wind_cdir_full))
-        statusItem.add(ListModel("https://cdn-icons-png.flaticon.com/512/2272/2272220.png","Relative humidity : "+value.data[0].rh))
-        statusItem.add(ListModel("https://cdn-icons-png.flaticon.com/512/5276/5276076.png","Air Quality : "+value.data[0].aqi))
+        statusItem.add(
+            ListModel(
+                "https://cdn-icons-png.flaticon.com/512/1375/1375420.png",
+                "Wind speed : " + value.data[0].wind_spd.toString()
+            )
+        )
+        statusItem.add(
+            ListModel(
+                "https://cdn-icons-png.flaticon.com/512/3061/3061188.png",
+                "Sea level : " + value.data[0].slp
+            )
+        )
+        statusItem.add(
+            ListModel(
+                "https://cdn-icons-png.flaticon.com/512/2272/2272225.png",
+                "wind direction : " + value.data[0].wind_cdir_full
+            )
+        )
+        statusItem.add(
+            ListModel(
+                "https://cdn-icons-png.flaticon.com/512/2272/2272220.png",
+                "Relative humidity : " + value.data[0].rh
+            )
+        )
+        statusItem.add(
+            ListModel(
+                "https://cdn-icons-png.flaticon.com/512/5276/5276076.png",
+                "Air Quality : " + value.data[0].aqi
+            )
+        )
         StatusList.swapStatusList(statusItem)
-        Log.i("51544545","main"+ value.data[0].country_code)
+        Log.i("51544545", "main" + value.data[0].country_code)
     }
 
     override fun onResponseFailure(throwable: Throwable?) {
@@ -145,6 +182,7 @@ fun Modifier.coloredShadow(
             )
         }
     }
+
 }
 
 

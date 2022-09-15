@@ -1,5 +1,6 @@
 package dev.mrjafari.weatherapp.view
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -29,6 +30,8 @@ import dev.mrjafari.weatherapp.ui.theme.shadow
 import dev.mrjafari.weatherapp.ui.theme.white
 import kotlinx.coroutines.launch
 
+val showProgress =
+    mutableStateOf(true)
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -89,7 +92,7 @@ fun MainScreen(navController: NavController, countries: MutableList<CountryModel
 
                         Button(
                             onClick = {
-                                ContryName.value = CountrySelected
+                                country.value = CountrySelected
                                 coroutineScope.launch {
                                     if (bottomSheetScaffoldState.bottomSheetState.isCollapsed)
                                         bottomSheetScaffoldState.bottomSheetState.expand()
@@ -116,7 +119,8 @@ fun MainScreen(navController: NavController, countries: MutableList<CountryModel
 
         ) {
         MainLayout(coroutineScope, bottomSheetScaffoldState, ContryName, navController,responseModel)
-
+        if (showProgress.value)
+        progress()
     }
 }
 

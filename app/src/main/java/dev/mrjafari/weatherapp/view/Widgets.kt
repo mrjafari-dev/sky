@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -31,6 +32,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import coil.compose.rememberImagePainter
@@ -44,6 +47,9 @@ import dev.mrjafari.weatherapp.model.remote.ResponsModel.ResponseModel
 import dev.mrjafari.weatherapp.ui.theme.*
 import kotlinx.coroutines.AbstractCoroutine
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 val country  = mutableStateOf("")
@@ -53,7 +59,7 @@ val date  = mutableStateOf("")
 val temp  = mutableStateOf("")
 val icon  = mutableStateOf("")
 var StatusList = mutableStateListOf<ListModel>()
-
+val fuck  = mutableStateOf(true)
 @SuppressLint("UnrememberedMutableState", "RememberReturnType")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -163,12 +169,16 @@ fun noteListItem(text: String , img :String) {
                     }),
                 contentDescription = "content discription"
             )
-            Text(text = text, modifier = Modifier.padding(10.dp).height(50.dp), fontFamily = fonts , fontWeight = FontWeight.Light , fontSize = 13.sp)
+            Text(text = text, modifier = Modifier
+                .padding(10.dp)
+                .height(50.dp), fontFamily = fonts , fontWeight = FontWeight.Light , fontSize = 13.sp)
 
         }
     }
 
 }
+val p =
+    mutableStateOf(false)
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -178,6 +188,25 @@ fun searchBox(
     ContryName: MutableState<String>,
     Cityname :String
 ) {
+
+
+    if (p.value){
+        Dialog(
+            onDismissRequest = { showProgress.value = false },
+            DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(100.dp)
+                    .background(Color.White, shape = RoundedCornerShape(8.dp)) ,
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+
+            }
+        }
+
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -234,13 +263,25 @@ fun searchBox(
                         .fillMaxHeight()
                         .width(1.dp)
                 )
-                Text(
+                val SearchValue= remember {
+                    mutableStateOf("")
+                }
+
+                BasicTextField(value =city.value , onValueChange = {
+                    city.value=it
+                },
+                    modifier = Modifier
+                        .padding(8.dp, 0.dp)
+                        .fillMaxWidth(),
+
+                    )
+               /* Text(
                     text = city.value,
                     fontSize = 18.sp,
                     modifier = Modifier.padding(8.dp, 0.dp),
                     fontFamily = fonts,
                     fontWeight = FontWeight.Normal
-                )
+                )*/
             }
             Row(
                 modifier = Modifier
@@ -260,8 +301,13 @@ fun searchBox(
                         modifier = Modifier
                             .size(25.dp)
                             .clickable {
-                                val model = RequestModel("US", "Raleigh")
-                                MainActivity().presenter.request_data(model)
+                                p.value=true
+                                MainActivity().test.value = true
+                                 CoroutineScope(Main).launch {
+                                    request(country.value, city.value)
+                                }
+                                // val model = RequestModel(country.value, city.value)
+                                //  MainActivity().presenter.request_data(model)
                             }
                     )
                 }
@@ -271,7 +317,11 @@ fun searchBox(
         }
     }
 }
-
+suspend fun request(contry:String , city:String){
+    delay(1000)
+    val model = RequestModel(contry, city)
+    MainActivity().presenter.request_data(model)
+}
 @Composable
 fun todayStatus(date:String ) {
     Row(
@@ -334,6 +384,7 @@ fun todayStatus(date:String ) {
                         fontFamily = fonts,
                         fontWeight = FontWeight.Bold
                     )
+
                 }
             }
             Image(
@@ -399,6 +450,14 @@ fun Preview_MultipleRadioButtons(countries: MutableList<CountryModel>): String {
     }
     return selectedValue.value
 }
+@Composable
+fun progress(){
+
+
+
+
+    }
+
 
 
 

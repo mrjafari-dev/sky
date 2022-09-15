@@ -1,6 +1,7 @@
 package dev.mrjafari.weatherapp.presenter
 
 import android.content.Context
+import android.util.Log
 import dev.mrjafari.weatherapp.contract.MainContract
 import dev.mrjafari.weatherapp.model.CountryModel
 import dev.mrjafari.weatherapp.model.MainModel
@@ -15,7 +16,11 @@ class MainPresenter(val view : MainContract.View,val context :Context):MainContr
     }
 
     override fun request_data(requestModel: RequestModel) {
+        view.showProgress()
+        Log.i("56456464","rec")
         model.getData(this,requestModel)
+
+
     }
 
     override fun CountryRequest() {
@@ -31,6 +36,9 @@ class MainPresenter(val view : MainContract.View,val context :Context):MainContr
     }
 
     override fun onFinished(value : ResponseModel) {
+        view.hideProgress()
         view.setData(value)
+
+        Log.i("56456464","onfinished")
     }
 }
