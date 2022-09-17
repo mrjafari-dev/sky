@@ -59,7 +59,7 @@ val date  = mutableStateOf("")
 val temp  = mutableStateOf("")
 val icon  = mutableStateOf("")
 var StatusList = mutableStateListOf<ListModel>()
-val fuck  = mutableStateOf(true)
+
 @SuppressLint("UnrememberedMutableState", "RememberReturnType")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -97,11 +97,9 @@ fun MainLayout(
             Spacer(modifier = Modifier.height(30.dp))
             noteList()
         }
-        FloatingActionButton(
+      /*  FloatingActionButton(
             onClick = {
                 navController.navigate(Screens.DetailScreen.rout)
-
-
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -109,7 +107,7 @@ fun MainLayout(
             backgroundColor = blue,
         ) {
             Icon(painter = painterResource(id = dev.mrjafari.weatherapp.R.drawable.ic_baseline_add_24), contentDescription ="", tint = white )
-        }
+        }*/
     }
 }
     fun <T> SnapshotStateList<T>.swapStatusList(newList: List<T>){
@@ -177,7 +175,7 @@ fun noteListItem(text: String , img :String) {
     }
 
 }
-val p =
+val progress =
     mutableStateOf(false)
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -190,7 +188,7 @@ fun searchBox(
 ) {
 
 
-    if (p.value){
+    if (progress.value){
         Dialog(
             onDismissRequest = { showProgress.value = false },
             DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
@@ -301,7 +299,7 @@ fun searchBox(
                         modifier = Modifier
                             .size(25.dp)
                             .clickable {
-                                p.value=true
+                                progress.value=true
                                 MainActivity().test.value = true
                                  CoroutineScope(Main).launch {
                                     request(country.value, city.value)
@@ -450,13 +448,7 @@ fun Preview_MultipleRadioButtons(countries: MutableList<CountryModel>): String {
     }
     return selectedValue.value
 }
-@Composable
-fun progress(){
 
-
-
-
-    }
 
 
 

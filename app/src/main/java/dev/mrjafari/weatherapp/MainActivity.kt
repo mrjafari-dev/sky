@@ -60,13 +60,8 @@ class MainActivity : ComponentActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContent {
             Navigation(Countries, dataa)
-
-
-
         }
-
         val model = RequestModel("IR", "mashhad")
-
         presenter.request_data(model)
         presenter.CountryRequest()
 
@@ -74,12 +69,16 @@ class MainActivity : ComponentActivity(), MainContract.View {
 
 
     override fun showProgress() {
-      //  test.value =true
-     //   p.value =true
+
+        //i change the progress value from this function but dont show progress dialog
+        //change progress value from widgets.kt in search button
+      //  progress.value =true
+
+
     }
 
     override fun hideProgress() {
-        p.value =false
+        progress.value =false
     }
 
     override fun setData(value: ResponseModel) {

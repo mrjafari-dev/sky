@@ -119,8 +119,6 @@ fun MainScreen(navController: NavController, countries: MutableList<CountryModel
 
         ) {
         MainLayout(coroutineScope, bottomSheetScaffoldState, ContryName, navController,responseModel)
-        if (showProgress.value)
-        progress()
     }
 }
 
