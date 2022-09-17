@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,7 +66,7 @@ fun MainScreen(navController: NavController, countries: MutableList<CountryModel
 
                                 countryList.clear()
                                 countries.forEach { countryModel ->
-                                    if (countryModel.country_name.contains(it)) {
+                                    if (countryModel.country_name.contains(searchBox.value.capitalize())) {
                                         countryList.add(countryModel)
                                     }
                                 }
